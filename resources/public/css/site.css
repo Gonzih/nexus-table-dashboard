@@ -1,34 +1,58 @@
 body {
   font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
-  max-width: 600px;
+  width: 100%
   margin: 0 auto;
   padding-top: 72px;
   -webkit-font-smoothing: antialiased;
   font-size: 1.125em;
   color: #333;
   line-height: 1.5em;
+  background: black;
+  color: white;
 }
-
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: #000;
 }
 h1 {
-  font-size: 2.5em
+  font-size: 2.5em;
 }
-
 h2 {
-  font-size: 2em
+  font-size: 2em;
 }
-
 h3 {
-  font-size: 1.5em
+  font-size: 1.5em;
 }
-
 a {
   text-decoration: none;
   color: #09f;
 }
-
 a:hover {
   text-decoration: underline;
+}
+div.pre {
+  width: 50%;
+  word-wrap: auto;
+  margin-left: 24%;
+}
+div.weather-report {
+  width: 100%;
+  border-top: 1px solid grey;
+}
+div.weather-report span.day {
+  border-bottom: 1px solid grey;
+  height: 100px;
+  display: inline-block;
+  padding: 10px 10px;
+  text-align: center;
+}
+div.weather-report span.day img {
+  display: block;
+}
+div.weather-report span.day span.temp {
+  display: block;
+}
+div.weather-report span.day span.temp:after {
+  content: " ℃";
 }

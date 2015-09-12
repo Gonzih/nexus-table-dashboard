@@ -1,45 +1,59 @@
 (ns nexus-dashboard.core
-    (:require [reagent.core :as reagent :refer [atom]]
-              [reagent.session :as session]
-              [secretary.core :as secretary :include-macros true]
-              [goog.events :as events]
-              [goog.history.EventType :as EventType])
-    (:import goog.History))
+  (:require-macros [cljs.core.async.macros :refer [go]])
+  (:require [reagent.core :as reagent :refer [atom]]
+            [goog.events :as events]
+            [goog.history.EventType :as EventType]
+            [goog.string :refer [format]]
+            [goog.string.format]
+            [clojure.walk :refer [keywordize-keys]]
+            [cljs.reader :as edn]
+            [cljs.core.async :refer [<!]]
+            [cljs-http.client :as http]
+            [cljs-time.core :as time]
+            [cljs-time.format :as time-format])
+  (:import goog.History))
+
+(enable-console-print!)
+
+(defonce weather-state (atom {}))
+
+(defn refresh-weather! []
+  (prn "Refreshing weather data")
+  (go (let [response (<! (http/get "/weather"))
+            data (keywordize-keys (edn/read-string (:body response)))]
+        (when (:city data)
+          (reset! weather-state data)))))
+
+(refresh-weather!)
+
+(defonce weather-loopty-loop
+  (js/setInterval refresh-weather! 120000))
 
 ;; -------------------------
 ;; Views
 
-(defn home-page []
-  [:div [:h2 "Welcome to nexus-dashboard"]
-   [:div [:a {:href "#/about"} "go to about page"]]])
+(defn weather-icon-component [icon-name]
+  [:img {:src (format "http://openweathermap.org/img/w/%s.png" icon-name)}])
 
-(defn about-page []
-  [:div [:h2 "About nexus-dashboard"]
-   [:div [:a {:href "#/"} "go to the home page"]]])
+(defn parse-time [string]
+  (time-format/parse (time-format/formatters :mysql) string))
+
+(defn format-time [dt]
+  (time-format/unparse (time-format/formatter "HH:mm") dt))
+
+(defn home-page []
+  [:div
+   [:div (-> @weather-state :city :name)]
+   [:div.weather-report
+    (for [e (:list @weather-state)]
+      ^{:key e}
+      [:span.day
+       [:div.time (->> e :dt_txt parse-time format-time)]
+       [:div.icon (-> e :weather first :icon weather-icon-component)]
+       [:div.temp (->> e :main :temp (format "%d"))]])]])
 
 (defn current-page []
-  [:div [(session/get :current-page)]])
-
-;; -------------------------
-;; Routes
-(secretary/set-config! :prefix "#")
-
-(secretary/defroute "/" []
-  (session/put! :current-page #'home-page))
-
-(secretary/defroute "/about" []
-  (session/put! :current-page #'about-page))
-
-;; -------------------------
-;; History
-;; must be called after routes have been defined
-(defn hook-browser-navigation! []
-  (doto (History.)
-    (events/listen
-     EventType/NAVIGATE
-     (fn [event]
-       (secretary/dispatch! (.-token event))))
-    (.setEnabled true)))
+  [:div [home-page]])
 
 ;; -------------------------
 ;; Initialize app
@@ -47,5 +61,4 @@
   (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
-  (hook-browser-navigation!)
   (mount-root))

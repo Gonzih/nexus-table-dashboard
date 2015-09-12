@@ -1,12 +1,14 @@
 body {
   font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
-  max-width: 600px;
+  width: 100%
   margin: 0 auto;
   padding-top: 72px;
   -webkit-font-smoothing: antialiased;
   font-size: 1.125em;
   color: #333;
   line-height: 1.5em;
+  background: black;
+  color: white;
 }
 
 h1, h2, h3 {
@@ -31,4 +33,36 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+div.pre {
+    width: 50%;
+    word-wrap: auto;
+    margin-left: 24%;
+}
+
+div.weather-report {
+    width: 100%;
+    border-top: 1px solid grey;
+    // border: 1px solid red;
+
+    span.day {
+        // border: 1px solid green;
+        border-bottom: 1px solid grey;
+        height: 100px;
+        display: inline-block;
+        padding: 10px 10px;
+        text-align: center;
+
+        img {
+            display: block;
+            // border: 1px solid white;
+        }
+        span.temp {
+            display: block;
+            &:after {
+                content: " ℃";
+            }
+        }
+    }
 }

@@ -6,7 +6,8 @@
             [hiccup.page :refer [include-js include-css]]
             [prone.middleware :refer [wrap-exceptions]]
             [ring.middleware.reload :refer [wrap-reload]]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [cheshire.core :as json]))
 
 (def home-page
   (html
@@ -18,15 +19,18 @@
      (include-css (if (env :dev) "css/site.css" "css/site.min.css"))]
     [:body
      [:div#app
-      [:h3 "ClojureScript has not been compiled!"]
-      [:p "please run "
-       [:b "lein figwheel"]
-       " in order to start the compiler"]]
+      [:h3 "Hi there!"]]
      (include-js "js/app.js")]]))
+
+(defn fetch-weather-data []
+  (json/parse-stream (clojure.java.io/reader "http://api.openweathermap.org/data/2.5/forecast?q=Haarlem,nl&mode=json&units=metric")))
+
+(defn weather []
+  (str (fetch-weather-data)))
 
 (defroutes routes
   (GET "/" [] home-page)
-  (resources "/")
+  (GET "/weather" [] (weather))
   (not-found "Not Found"))
 
 (def app

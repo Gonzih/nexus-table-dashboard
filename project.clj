@@ -16,7 +16,11 @@
                  [hiccup "1.0.5"]
                  [environ "1.0.0"]
                  [org.clojure/clojurescript "1.7.122" :scope "provided"]
-                 [secretary "1.2.3"]]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 [secretary "1.2.3"]
+                 [cheshire "5.5.0"]
+                 [cljs-http "0.1.37"]
+                 [com.andrewmcveigh/cljs-time "0.3.13"]]
 
   :plugins [[lein-environ "1.0.0"]
             [lein-asset-minifier "0.2.2"]]
