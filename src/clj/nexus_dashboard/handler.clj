@@ -13,7 +13,10 @@
   (html
    [:html
     [:head
+     [:title "Dashboard"]
      [:meta {:charset "utf-8"}]
+     [:mate {:name "apple-mobile-web-app-capable" :content "yes"}]
+     [:mate {:name "mobile-web-app-capable" :content "yes"}]
      [:meta {:name "viewport"
              :content "width=device-width, initial-scale=1"}]
      (include-css (if (env :dev) "css/site.css" "css/site.min.css"))]

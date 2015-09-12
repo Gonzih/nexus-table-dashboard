@@ -43,7 +43,8 @@
 
 (defn home-page []
   [:div
-   [:div (-> @weather-state :city :name)]
+   [:div.title
+    [:h2 (-> @weather-state :city :name)]]
    [:div.weather-report
     (for [e (:list @weather-state)]
       ^{:key e}
