@@ -41,9 +41,16 @@
 (defn format-time [dt]
   (time-format/unparse (time-format/formatter "HH:mm") dt))
 
+(defn request-fullscreen! []
+  (let [fs-fn (or js/document.documentElement.requestFullscreen
+                  js/document.documentElement.mozRequestFullscreen
+                  js/document.documentElement.webkitRequestFullscreen)]
+    (fs-fn)))
+
 (defn home-page []
   [:div
    [:div.title
+    {:on-click request-fullscreen!}
     [:h2 (-> @weather-state :city :name)]]
    [:div.weather-report
     (for [e (:list @weather-state)]
