@@ -41,11 +41,10 @@
 (defn format-time [dt]
   (time-format/unparse (time-format/formatter "HH:mm") dt))
 
-(defn request-fullscreen! []
-  (let [fs-fn (or js/document.documentElement.requestFullscreen
-                  js/document.documentElement.mozRequestFullscreen
-                  js/document.documentElement.webkitRequestFullscreen)]
-    (fs-fn)))
+(def request-fullscreen! (or js/document.documentElement.requestFullscreen
+                             js/document.documentElement.mozRequestFullscreen
+                             js/document.documentElement.webkitRequestFullscreen
+                             identity))
 
 (defn home-page []
   [:div
