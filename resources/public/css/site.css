@@ -37,13 +37,13 @@ div.title {
 }
 div.weather-report {
   width: 100%;
-  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
 }
 div.weather-report span.day.future-day {
   opacity: 0.65;
 }
 div.weather-report span.day {
-  border-bottom: 1px solid grey;
+  border-top: 1px solid white;
   height: 130px;
   width: 95px;
   display: inline-block;
