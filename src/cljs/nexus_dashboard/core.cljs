@@ -66,20 +66,26 @@
                              js/document.documentElement.webkitRequestFullscreen
                              identity))
 
-(defn summary-component [{{:keys [temp_min temp_max grnd_level humidity]} :main :keys [rain snow weather] :as data}]
+(defn summary-component [{{:keys [temp_min temp_max grnd_level humidity]} :main
+                          {snow-3h :3h} :snow
+                          {rain-3h :3h} :rain
+                          [{weather-icon :icon weather-description :description} & _] :weather
+                          {wind-speed :speed} :wind
+                          {clouds-percentage :all} :clods
+                          :as data}]
   (when data
     [:span.summary
      [:div.header
-      [:img {:src (format "http://openweathermap.org/img/w/%s.png" (-> weather first :icon))}]
-      (-> weather first :description string/capitalize)]
+      [:img {:src (format "http://openweathermap.org/img/w/%s.png" weather-icon)}]
+      (string/capitalize weather-description)]
      [:div.info
       (format "Temperature — %d℃ - %d℃" temp_min temp_max)
-      (when (:3h rain) (format "Rain volume — %fmm" (:3h rain)))
-      (when (:3h snow) (format "Snow volume — %fmm" (:3h snow)))
+      (when rain-3h (format "Rain volume — %fmm" rain-3h))
+      (when snow-3h (format "Snow volume — %fmm" snow-3h))
       (format "Humidity — %d%" humidity)
       (format "Atmospheric pressure — %fhPa" grnd_level)
-      (format "Wind — %fm/sec" (-> data :wind :speed))
-      (format "Clouds — %d%" (-> data :clouds :all))]]))
+      (format "Wind — %fm/sec" wind-speed)
+      (format "Clouds — %d%" clouds-percentage)]]))
 
 (defn day-component [first-date {:keys [dt_txt weather main] :as data}]
   (let [date (-> dt_txt parse-time format-date)
