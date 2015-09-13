@@ -41,23 +41,40 @@
 (defn format-time [dt]
   (time-format/unparse (time-format/formatter "HH:mm") dt))
 
+(defn format-date [dt]
+  (time-format/unparse (time-format/formatter "d MMM") dt))
+
 (def request-fullscreen! (or js/document.documentElement.requestFullscreen
                              js/document.documentElement.mozRequestFullscreen
                              js/document.documentElement.webkitRequestFullscreen
                              identity))
+
+(defn day-component [first-date {:keys [dt_txt weather main] :as data}]
+  (let [date (-> dt_txt parse-time format-date)
+        extra-class (if (= date first-date)
+                      "current-day"
+                      "future-day")]
+    ^{:key data}
+    [:span.day
+     {:class extra-class}
+     [:div.date date]
+     [:div.time (->> dt_txt parse-time format-time)]
+     [:div.icon (->> weather first :icon weather-icon-component)]
+     [:div.temp (->> main :temp (format "%d"))]]))
+
+(defn weather-report-component []
+  (if-let [time-slots (:list @weather-state)]
+    [:div.weather-report
+     (map (partial day-component
+                   (-> @weather-state :list first :dt_txt parse-time format-date))
+          (take 15 time-slots))]))
 
 (defn home-page []
   [:div
    [:div.title
     {:on-click request-fullscreen!}
     [:h2 (-> @weather-state :city :name)]]
-   [:div.weather-report
-    (for [e (:list @weather-state)]
-      ^{:key e}
-      [:span.day
-       [:div.time (->> e :dt_txt parse-time format-time)]
-       [:div.icon (-> e :weather first :icon weather-icon-component)]
-       [:div.temp (->> e :main :temp (format "%d"))]])]])
+   [weather-report-component]])
 
 (defn current-page []
   [:div [home-page]])

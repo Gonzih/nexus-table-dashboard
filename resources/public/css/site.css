@@ -39,19 +39,23 @@ div.weather-report {
   width: 100%;
   border-top: 1px solid grey;
 }
+div.weather-report span.day.future-day {
+  opacity: 0.65;
+}
 div.weather-report span.day {
   border-bottom: 1px solid grey;
-  height: 100px;
+  height: 130px;
+  width: 95px;
   display: inline-block;
   padding: 10px 10px;
   text-align: center;
 }
 div.weather-report span.day img {
+  display: inline-block;
+}
+div.weather-report span.day div.temp {
   display: block;
 }
-div.weather-report span.day span.temp {
-  display: block;
-}
-div.weather-report span.day span.temp:after {
+div.weather-report span.day div.temp:after {
   content: " ℃";
 }

@@ -48,19 +48,24 @@ div.weather-report {
     border-top: 1px solid grey;
     // border: 1px solid red;
 
+    span.day.future-day {
+        opacity: 0.65;
+    }
+
     span.day {
         // border: 1px solid green;
         border-bottom: 1px solid grey;
-        height: 100px;
+        height: 130px;
+        width: 95px;
         display: inline-block;
         padding: 10px 10px;
         text-align: center;
 
         img {
-            display: block;
+            display: inline-block;
             // border: 1px solid white;
         }
-        span.temp {
+        div.temp {
             display: block;
             &:after {
                 content: " ℃";
