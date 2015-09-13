@@ -71,7 +71,7 @@
                           {rain-3h :3h} :rain
                           [{weather-icon :icon weather-description :description} & _] :weather
                           {wind-speed :speed} :wind
-                          {clouds-percentage :all} :clods
+                          {clouds-percentage :all} :clouds
                           :as data}]
   (when data
     [:span.summary
