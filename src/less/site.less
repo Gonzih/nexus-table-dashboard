@@ -49,27 +49,62 @@ div.weather-report {
     // border: 1px solid red; // debug
 
     span.day.future-day {
-        opacity: 0.65;
+        opacity: 0.45;
+        background: rgb(50, 50, 50);
     }
 
     span.day {
         // border: 1px solid green; // debug
         border-top: 1px solid white;
         height: 130px;
-        width: 95px;
+        width: 97px;
         display: inline-block;
         padding: 10px 10px;
         text-align: center;
-
-        div.icon {
-            font-size: 40px;
-        }
+        margin: 0;
 
         div.temp {
             display: block;
             &:after {
-                content: " ℃";
+                content: "℃";
             }
+        }
+    }
+}
+
+div.popup {
+    position: fixed;
+    width: 70%;
+    left: 12%;
+    bottom: 5%;
+    background: rgba(60, 60, 60, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+span.summary {
+    @padding: 20px;
+
+    div.header {
+        padding: @padding;
+        padding-bottom: 0;
+        float:left;
+        line-height: 50px;
+        vertical-align: middle;
+
+        img, span {
+            display: block;
+            float: left;
+        }
+    }
+
+    div.info {
+        padding: @padding;
+        float: left;
+        width: 100%;
+
+        span {
+            display: block;
         }
     }
 }
