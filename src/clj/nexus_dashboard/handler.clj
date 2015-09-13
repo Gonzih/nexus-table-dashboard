@@ -19,10 +19,10 @@
      [:mate {:name "mobile-web-app-capable" :content "yes"}]
      [:meta {:name "viewport"
              :content "width=device-width, initial-scale=1"}]
+     (include-css "css/owfont-regular.min.css")
      (include-css (if (env :dev) "css/site.css" "css/site.min.css"))]
     [:body
-     [:div#app
-      [:h3 "Hi there!"]]
+     [:div#app]
      (include-js "js/app.js")]]))
 
 (defn fetch-weather-data []

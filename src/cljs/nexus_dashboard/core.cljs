@@ -32,8 +32,9 @@
 ;; -------------------------
 ;; Views
 
-(defn weather-icon-component [icon-name]
-  [:img {:src (format "http://openweathermap.org/img/w/%s.png" icon-name)}])
+(defn weather-icon-component [{:keys [id icon] :as weather}]
+  (let [day-or-night (if (re-find #"d" icon) "d" "n")]
+    [:i.owf {:class (format "owf-%d-%s" id day-or-night)}]))
 
 (defn parse-time [string]
   (time-format/parse (time-format/formatters :mysql) string))
@@ -59,7 +60,7 @@
      {:class extra-class}
      [:div.date date]
      [:div.time (->> dt_txt parse-time format-time)]
-     [:div.icon (->> weather first :icon weather-icon-component)]
+     [:div.icon (->> weather first weather-icon-component)]
      [:div.temp (->> main :temp (format "%d"))]]))
 
 (defn weather-report-component []
@@ -67,7 +68,7 @@
     [:div.weather-report
      (map (partial day-component
                    (-> @weather-state :list first :dt_txt parse-time format-date))
-          (take 15 time-slots))]))
+          (take 35 time-slots))]))
 
 (defn home-page []
   [:div
