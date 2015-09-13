@@ -67,18 +67,19 @@
                              identity))
 
 (defn summary-component [{{:keys [temp_min temp_max grnd_level humidity]} :main :keys [rain snow weather] :as data}]
-  [:span.summary
-   [:div.header
-    [:img {:src (format "http://openweathermap.org/img/w/%s.png" (-> weather first :icon))}]
-    (-> weather first :description string/capitalize)]
-   [:div.info
-    (format "Temperature — %d℃ - %d℃" temp_min temp_max)
-    (when rain (format "Rain volume — %fmm" (:3h rain)))
-    (when snow (format "Snow volume — %fmm" (:3h snow)))
-    (format "Humidity — %d%" humidity)
-    (format "Atmospheric pressure — %fhPa" grnd_level)
-    (format "Wind — %fm/sec" (-> data :wind :speed))
-    (format "Clouds — %d%" (-> data :clouds :all))]])
+  (when data
+    [:span.summary
+     [:div.header
+      [:img {:src (format "http://openweathermap.org/img/w/%s.png" (-> weather first :icon))}]
+      (-> weather first :description string/capitalize)]
+     [:div.info
+      (format "Temperature — %d℃ - %d℃" temp_min temp_max)
+      (when rain (format "Rain volume — %fmm" (:3h rain)))
+      (when snow (format "Snow volume — %fmm" (:3h snow)))
+      (format "Humidity — %d%" humidity)
+      (format "Atmospheric pressure — %fhPa" grnd_level)
+      (format "Wind — %fm/sec" (-> data :wind :speed))
+      (format "Clouds — %d%" (-> data :clouds :all))]]))
 
 (defn day-component [first-date {:keys [dt_txt weather main] :as data}]
   (let [date (-> dt_txt parse-time format-date)
