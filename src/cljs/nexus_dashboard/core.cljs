@@ -23,6 +23,7 @@
   (go (let [response (<! (http/get "/weather"))
             data (keywordize-keys (edn/read-string (:body response)))]
         (when (:city data)
+          (prn data)
           (reset! weather-state data)))))
 
 (refresh-weather!)
