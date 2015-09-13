@@ -74,8 +74,8 @@
       (-> weather first :description string/capitalize)]
      [:div.info
       (format "Temperature — %d℃ - %d℃" temp_min temp_max)
-      (when rain (format "Rain volume — %fmm" (:3h rain)))
-      (when snow (format "Snow volume — %fmm" (:3h snow)))
+      (when (:3h rain) (format "Rain volume — %fmm" (:3h rain)))
+      (when (:3h snow) (format "Snow volume — %fmm" (:3h snow)))
       (format "Humidity — %d%" humidity)
       (format "Atmospheric pressure — %fhPa" grnd_level)
       (format "Wind — %fm/sec" (-> data :wind :speed))
